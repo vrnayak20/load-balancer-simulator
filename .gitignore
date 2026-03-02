@@ -1,0 +1,14 @@
+# Compiled Object files
+*.o
+
+# Executable
+loadbalancer
+
+# Doxygen generated documentation
+html/
+latex/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+.vscode
