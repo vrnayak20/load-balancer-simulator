@@ -67,6 +67,8 @@ public:
     int get_system_time() const;
     int get_discarded_count() const;
     int get_processed_count() const;
+    int get_active_servers() const;
+    int get_inactive_servers() const;
     ///@}
 };
 

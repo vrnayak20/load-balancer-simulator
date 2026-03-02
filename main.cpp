@@ -77,10 +77,15 @@ int main() {
 
     int prev_p_servers = main_switch.get_processing_lb().get_server_count();
     int prev_s_servers = main_switch.get_streaming_lb().get_server_count();
+    int randomly_generated_p = 0;
+    int randomly_generated_s = 0;
 
     for (int cycle = 0; cycle < total_cycles; ++cycle) {
         if (rand() % 10 < 3) { 
-            main_switch.route_request(generate_request(MIN_TASK_TIME, MAX_TASK_TIME));
+            Request new_req = generate_request(MIN_TASK_TIME, MAX_TASK_TIME);
+            main_switch.route_request(new_req);
+            if (new_req.job_type == 'P') randomly_generated_p++;
+            else randomly_generated_s++;
         }
 
         main_switch.process_cycle();
@@ -113,6 +118,9 @@ int main() {
     std::cout << "Ending Queue Size:        " << main_switch.get_processing_lb().get_queue_size() << "\n";
     std::cout << "Final Server Count:       " << main_switch.get_processing_lb().get_server_count() << "\n";
     std::cout << "Total Requests Processed: " << main_switch.get_processing_lb().get_processed_count() << "\n";
+    std::cout << "Random Requests Gen:      " << randomly_generated_p << "\n";
+    std::cout << "Active Servers:           " << main_switch.get_processing_lb().get_active_servers() << "\n";
+    std::cout << "Inactive Servers:         " << main_switch.get_processing_lb().get_inactive_servers() << "\n";
     std::cout << "Requests Blocked by FW:   " << main_switch.get_processing_lb().get_discarded_count() << "\n\n";
 
     std::cout << CYAN << ">> Streaming Load Balancer <<" << RESET << "\n";
@@ -120,6 +128,9 @@ int main() {
     std::cout << "Ending Queue Size:        " << main_switch.get_streaming_lb().get_queue_size() << "\n";
     std::cout << "Final Server Count:       " << main_switch.get_streaming_lb().get_server_count() << "\n";
     std::cout << "Total Requests Processed: " << main_switch.get_streaming_lb().get_processed_count() << "\n";
+    std::cout << "Random Requests Gen:      " << randomly_generated_s << "\n";
+    std::cout << "Active Servers:           " << main_switch.get_streaming_lb().get_active_servers() << "\n";
+    std::cout << "Inactive Servers:         " << main_switch.get_streaming_lb().get_inactive_servers() << "\n";
     std::cout << "Requests Blocked by FW:   " << main_switch.get_streaming_lb().get_discarded_count() << "\n";
 
     return 0;

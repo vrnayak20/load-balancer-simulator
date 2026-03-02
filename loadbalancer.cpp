@@ -86,3 +86,17 @@ int LoadBalancer::get_server_count() const { return servers.size(); }
 int LoadBalancer::get_system_time() const { return system_time; }
 int LoadBalancer::get_discarded_count() const { return requests_discarded; }
 int LoadBalancer::get_processed_count() const { return total_processed; }
+
+int LoadBalancer::get_active_servers() const {
+    int count = 0;
+    for (size_t i = 0; i < servers.size(); ++i) {
+        if (servers[i].is_busy()) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int LoadBalancer::get_inactive_servers() const {
+    return servers.size() - get_active_servers();
+}
